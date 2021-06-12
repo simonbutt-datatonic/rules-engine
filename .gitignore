@@ -1,0 +1,16 @@
+# General Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+.ipynb_checkpoints
+*.sqlite3
+__pypackages__
+
+# IDE/Text Editor
+.code-workspace
+.vscode
+.idea
+
+tmp

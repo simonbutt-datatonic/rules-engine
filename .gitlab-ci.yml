@@ -1,0 +1,23 @@
+image: python:buster
+
+stages:
+  - test
+
+cache:
+  paths:
+    - /root/.local/share/virtualenvs/
+
+pre_commit_checks:
+  stage: test
+  script:
+    - pip install --upgrade poetry pre-commit 
+    - poetry install
+    - poetry run pre-commit run --all-files
+
+coverage:
+  stage: test
+  script: 
+    - pip install --upgrade poetry pre-commit 
+    - poetry install
+    - poetry run coverage run -m pytest
+    - poetry run coverage report -m
