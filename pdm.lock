@@ -161,7 +161,7 @@ summary = "Python Library for Tom's Obvious, Minimal Language"
 
 [metadata]
 lock_version = "3"
-content_hash = "sha256:53ea6e7f97864f0d50996a71626b0d8f98ab3aefe73df18a7e93b045af6d0443"
+content_hash = "sha256:a1e4e03849b6fccd2a247dbc1fe0ff1ca0007f93c382a481e962c57fbf4e8aa3"
 
 [metadata.files]
 "appdirs 1.4.4" = [

@@ -1,6 +1,8 @@
 {
-    "x_a": "Hello my name is Simon. How are you?",
-    "x_b": 12,
-    "x_c": false,
-    "x_d": 17
+    "test_data": {
+        "x_a": "Hello my name is Simon. How are you?",
+        "x_b": 12,
+        "x_c": false,
+        "x_d": 17
+    }
 }

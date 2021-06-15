@@ -1,2 +1,16 @@
-y_1:
-  
+apiVersion: "datatonic.com/opensounce/rules_engine/v1-rc1"
+output_schema:
+  y_1:
+    type: STRING
+    rule_id: text_contains
+    required_variables: [TARGET_WORD]
+    required_secrets: []
+    input_data: [
+      test_data.x_a
+    ]
+
+
+# TODO: Following the KFP component.yaml pattern, build external 
+#       rule_id option
+# 
+# TODO: Have the option to hook up to a secrets manager
