@@ -10,6 +10,7 @@ coverage:
     - pip install pdm
     - pdm install
   script:
+    - export PYTHONPATH="$PYTHONPATH:$(pwd)"
     - pdm run pytest --cov=main tests/
 
 pre-commit:

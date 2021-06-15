@@ -5,7 +5,7 @@ description = ""
 authors = [
     {name = "simonbutt-datatonic", email = "simon.butt@datatonic.com"},
 ]
-dependencies = ["pytest~=6.2"]
+dependencies = ["pytest~=6.2", "pyyaml~=5.4"]
 requires-python = ">=3.8"
 dynamic = ["classifiers"]
 license = {text = "MIT"}
