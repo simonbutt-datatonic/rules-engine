@@ -1,4 +1,4 @@
-from main.rules.base_rules import text_contains
+from main.rules import base_rules
 import unittest
 import pathlib
 import logging
@@ -16,30 +16,42 @@ class TestBaseRules(unittest.TestCase):
     def test_text_contains_sunny(self) -> None:
         # Sunny side match case
         self.assertTrue(
-            text_contains(
-                raw_text=" Hello my name is",
-                target="Hello",
+            base_rules.text_contains(
+                data={"raw_data": " Hello my name is"},
+                variables={"match_case": True, "target": "Hello"},
             )
         )
 
     def test_text_contains_fail(self) -> None:
         self.assertFalse(
-            text_contains(
-                raw_text=" Hello my name is",
-                target="hell",
+            base_rules.text_contains(
+                data={"raw_data": " Hello my name is"},
+                variables={"match_case": True, "target": "hell"},
             )
         )
 
     def test_text_contains_match_case_sunny(self) -> None:
         # Sunny side match case
         self.assertTrue(
-            text_contains(raw_text=" Hello my name is", target="hell", match_case=False)
+            base_rules.text_contains(
+                data={"raw_data": " Hello my name is"},
+                variables={"match_case": False, "target": "hell"},
+            )
         )
 
     def test_text_contains_match_case_fail(self) -> None:
         self.assertFalse(
-            text_contains(raw_text=" Hello my name is", target="hell", match_case=True)
+            base_rules.text_contains(
+                data={"raw_data": " Hello my name is"},
+                variables={"match_case": True, "target": "hell"},
+            )
         )
+
+    def test_equal(self) -> None:
+        self.assertTrue(base_rules.eq({"value": 3}, {"target": 3}))
+
+    def test_is_true(self) -> None:
+        self.assertTrue(base_rules.is_true({"value": [True, True]}))
 
 
 if __name__ == "__main__":

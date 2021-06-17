@@ -39,7 +39,9 @@ class RulesEngine:
         )
 
         base_modules_config: List[str] = {
-            key: value for (key, value) in getmembers(base, isfunction)
+            key: value
+            for (key, value) in getmembers(base, isfunction)
+            if key in operator_id_list
         }
 
         logging.debug(
@@ -59,17 +61,72 @@ class RulesEngine:
                 f"{self.log_path}._get_rules_operator_config - Operators not found: {intersection}"
             )
 
-    # def run(self, raw_data: dict, rules_config: dict) -> dict:
+    def _traverse_data(self, data: dict, value: str):
+        key_list: list = value.split(".")
 
-    #     result_config: dict = {}
+        # TODO: make this less hacky. Recursion would avoid this mess
+        _data_tmp = data
+        for key in key_list:
+            try:
+                _data_tmp_new = _data_tmp.copy()[key]
+            except KeyError:
+                logging.error(
+                    f"{self.log_path}/_traverse_data.value: Data source not found: {value}"
+                )
+                raise KeyError(value)
+            _data_tmp = _data_tmp_new
+        return _data_tmp
 
-    #     # ROC --> rules orchestration config
-    #     ROC: dict = rules_config.pop("output_schema")
-    #     lambda_rules_config: dict = self._pull_operators(
-    #         operator_id_list=[ROC[key]["rule_id"] for key in ROC.keys()]
-    #     )
+    def _formulate_data(self, raw_data: dict, input_data_config: dict):
 
-    #     for output_key in ROC.keys():
-    #         logging.debug(f"{self.log_path}.rules_engine.ROC.output_key: {output_key}")
+        # TODO: Both _formulate_data & _traverse_data are low hanging tech debt fruit
 
-    #     return result_config
+        return {
+            key: [
+                self._traverse_data(raw_data, value) for value in input_data_config[key]
+            ]
+            if key.endswith("_list")
+            else self._traverse_data(raw_data, input_data_config[key])
+            for key in input_data_config
+        }
+
+    def _formulate_secrets(self, required_secrets: dict) -> dict:
+        # TODO: hook up to a secrets manager
+
+        return {}
+
+    def _execute_rules(self, raw_data: dict, schema: dict, operator: dict):
+
+        data = self._formulate_data(raw_data, schema["input_data"])
+
+        # TODO: Figure out if we want to split this out a la kubernetes variables
+        return operator(
+            data,
+            variables=schema.get("required_variables", {}),
+            secrets=schema.get("required_secrets", {}),
+        )
+
+    def run(self, raw_data: dict, rules_config: dict) -> dict:
+
+        """
+        Key (in the meantime)
+        result_config: output
+        schema_config: everything in your `rules_config.output_schema`
+        operator_config: all the operators used to build `result_config`
+        """
+
+        schema_config: dict = rules_config.pop("output_schema")
+        operator_config: dict = self._pull_operators(
+            operator_id_list=[
+                schema_config[key]["rule_id"] for key in schema_config.keys()
+            ]
+        )
+
+        return {
+            output_key: self._execute_rules(
+                raw_data=raw_data,
+                schema=schema_config[output_key],
+                operator=operator_config[schema_config[output_key]["rule_id"]],
+            )
+            for output_key in schema_config.keys()
+        }

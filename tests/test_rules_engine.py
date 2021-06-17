@@ -25,7 +25,7 @@ class TestRulesEngine(unittest.TestCase):
             self.input_raw: dict = json.load(raw_file)
 
         with open(f"{test_resource_path}/test_rules_config.yml") as rules_file:
-            self.test_rules: dict = yaml.load(rules_file, Loader=yaml.SafeLoader)
+            self.rules_config: dict = yaml.load(rules_file, Loader=yaml.SafeLoader)
 
         # Everything is stateless, so this is less bad than it seems
         self.R = RulesEngine()
@@ -44,12 +44,33 @@ class TestRulesEngine(unittest.TestCase):
 
         self.assertTrue("does_not_exist" in str(exec_info.value))
 
-    # def test_rules_engine(self) -> None:
-    #     # Complete Test
-    #     self.assertDictEqual(
-    #         self.R.run(raw_data=self.input_raw, rules_config=self.test_rules),
-    #         self.rag_config
-    #     )
+    def test_formulate_secrets(self) -> None:
+        # TODO: stub
+        self.assertDictEqual(self.R._formulate_secrets(required_secrets={}), {})
+
+    def test_traverse_data(self) -> None:
+        with pytest.raises(KeyError) as exec_info:
+            self.R._traverse_data({"a.b": 2}, "b"),
+
+        self.assertTrue("b" in str(exec_info.value))
+
+    def test_formulate_data(self) -> None:
+        self.assertEqual(
+            self.R._formulate_data(
+                raw_data=self.input_raw,
+                input_data_config=self.rules_config["output_schema"]["y_1"][
+                    "input_data"
+                ],
+            ),
+            {"raw_data": "Hello my name is Simon. How are you?"},
+        )
+
+    def test_run_sunny(self) -> None:
+        # TODO: Complete Test
+        self.assertDictEqual(
+            self.R.run(raw_data=self.input_raw, rules_config=self.rules_config),
+            self.rag_config,
+        )
 
 
 if __name__ == "__main__":

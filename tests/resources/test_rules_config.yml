@@ -1,13 +1,26 @@
-apiVersion: "datatonic.com/opensounce/rules_engine/v1-rc1"
+apiVersion: datatonic.com/opensounce/rules_engine/v1-rc1
 output_schema:
   y_1:
-    type: STRING
     rule_id: text_contains
-    required_variables: [TARGET_WORD]
-    required_secrets: []
-    input_data: [
-      test_data.x_a
-    ]
+    required_variables:
+      target: hell
+      match_case: false
+    input_data:
+      raw_data: test_data.x_a
+  y_1_nest:
+    rule_id: text_contains
+    required_variables:
+      target: hell
+      match_case: false
+    input_data:
+      raw_data: test_data.x_a_nest.nesting
+  y_2:
+    rule_id: lt
+    required_variables:
+      target: 10
+    input_data:
+      value: test_data.x_b
+
 
 
 # TODO: Following the KFP component.yaml pattern, build external 
