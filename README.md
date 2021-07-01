@@ -1,10 +1,20 @@
-<center><h2>Python Template</h2></center>
+<center><h2>Rules Engine</h2></center>
 
-The purpose of this repository is to be a template for Python projects going forward
+  Basic Rules Engine API designed to be part of an event driven solution architecture.
+
+  This is designed for NoSQL data but will be configurable to multiple backends
+
+Goals:
+  -   To be better than SQL for deeply nested data
+  -   To offer logic on temporary abstractions without large latency overhead
+
+## First Steps
+
+TODO
 
 ## Prerequisites
-- Python 3.7+ ([pyenv](https://github.com/pyenv/pyenv) is the best way to install/manage)
-- [Poetry](https://python-poetry.org/docs/)
+- Python 3.8+ ([pyenv](https://github.com/pyenv/pyenv) is the best way to install/manage)
+- [pdm](https://pdm.fming.dev/)
 - [Pre-commit](https://pre-commit.com/)
 
 Install the pre-commit hook
@@ -69,14 +79,10 @@ Here we're using a combination of `pytest`/`unittest`/`coverage` to achieve a ni
 
 ```bash
 # Run individual test file (test_hello.py)
-poetry run python tests/test_hello.py
+pdm run python tests/test_base_rules.py
 
-# Run all unit tests
-poetry run pytest
-
-# Run all tests with coverage
-poetry run coverage run -m pytest
-poetry run coverage report -m
+# Run all tests
+pdm run pytest --cov=main tests/
 
 ```
 

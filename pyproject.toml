@@ -1,12 +1,12 @@
 [project]
-name = ""
-version = ""
+name = "rules-api"
+version = "0.1.0"
 description = ""
 authors = [
     {name = "simonbutt-datatonic", email = "simon.butt@datatonic.com"},
 ]
-dependencies = ["pytest~=6.2", "pyyaml~=5.4"]
-requires-python = ">=3.8"
+dependencies = []
+requires-python = ">=3.9"
 dynamic = ["classifiers"]
 license = {text = "MIT"}
 
@@ -22,4 +22,11 @@ build-backend = "pdm.pep517.api"
 [tool]
 [tool.pdm]
 [tool.pdm.dev-dependencies]
-dev = ["black~=21.6b0", "pytest-cov~=2.12", "flake8~=3.9"]
+dev = [
+    "black~=21.6b0",
+    "flake8~=3.9",
+    "pytest-cov~=2.12",
+    "setuptools~=57.0",
+    "build~=0.5",
+    "twine~=3.4",
+]

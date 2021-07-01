@@ -7,6 +7,7 @@ __pycache__/
 .ipynb_checkpoints
 *.sqlite3
 __pypackages__
+dist
 
 # IDE/Text Editor
 .code-workspace
@@ -16,3 +17,7 @@ __pypackages__
 tmp
 
 node_modules
+
+.envrc
+
+*egg-info
